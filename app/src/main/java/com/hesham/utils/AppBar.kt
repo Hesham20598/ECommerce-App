@@ -52,7 +52,7 @@ fun CustomSearchAppBar(onSearchIconClick: () -> Unit, onCartIconClick: () -> Uni
         // Route signature image
         Image(
             painter = painter,
-            contentDescription = "route Signature",
+            contentDescription = stringResource(R.string.route_signature),
             modifier = Modifier
                 .padding(start = 16.dp)
                 .size(70.dp)
@@ -89,7 +89,7 @@ fun CustomSearchAppBar(onSearchIconClick: () -> Unit, onCartIconClick: () -> Uni
                 leadingIcon = {
                     Image(
                         painter = painterResource(id = R.drawable.search_icon),
-                        contentDescription = "search icon",
+                        contentDescription = stringResource(R.string.search_icon),
                         modifier = Modifier
                             .padding(start = 24.dp, end = 8.dp, top = 13.dp, bottom = 13.dp)
                             .size(35.dp)
@@ -102,8 +102,8 @@ fun CustomSearchAppBar(onSearchIconClick: () -> Unit, onCartIconClick: () -> Uni
             )
             // cart image
             Image(
-                painter = painterResource(id = R.drawable.cart_image),
-                contentDescription = "cart image",
+                painter = painterResource(id = R.drawable.cart_icon),
+                contentDescription = stringResource(R.string.cart_image),
                 modifier = Modifier
                     .padding(start = 8.dp, end = 16.dp)
                     .size(35.dp)
@@ -136,7 +136,7 @@ fun SimpleAppBar(
             .padding(horizontal = 8.dp),
         title = {
             Text(
-                text = "Product Details",
+                text = stringResource(R.string.product_details),
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Medium,
@@ -147,7 +147,7 @@ fun SimpleAppBar(
         navigationIcon = {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Arrow Back",
+                contentDescription = stringResource(R.string.arrow_back),
                 tint = mainColor,
                 modifier = Modifier
                     .size(24.dp)
@@ -166,7 +166,7 @@ fun SimpleAppBar(
 
                 Image(
                     painter = painterResource(id = R.drawable.search_icon),
-                    contentDescription = "search icon",
+                    contentDescription = stringResource(R.string.search_icon),
                     modifier = Modifier
                         .size(24.dp)
                         .clickable {
@@ -174,8 +174,8 @@ fun SimpleAppBar(
                         }
                 )
                 Image(
-                    painter = painterResource(id = R.drawable.cart_image),
-                    contentDescription = "cart image",
+                    painter = painterResource(id = R.drawable.cart_icon),
+                    contentDescription = stringResource(R.string.cart_image),
                     modifier = Modifier
                         .size(24.dp)
                         .clickable {

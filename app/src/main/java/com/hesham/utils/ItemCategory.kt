@@ -15,19 +15,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hesham.domain.entity.category.CategoryItemDTO
 import com.hesham.e_commerceapp.R
-import com.hesham.e_commerceapp.model.CategoryItem
 import com.hesham.e_commerceapp.ui.theme.textColor1
 import com.hesham.e_commerceapp.ui.theme.unSelectedContainerColor
 
 @Composable
 fun ItemCategory(
-    categoryItem: CategoryItem,
+    categoryItem: CategoryItemDTO,
     mutableIntState: MutableIntState,
     index: Int,
     onTabSelected: () -> Unit
@@ -41,7 +42,7 @@ fun ItemCategory(
         if (mutableIntState.intValue == index) {
             Image(
                 painter = painterResource(id = R.drawable.indicator),
-                contentDescription = "indicator image",
+                contentDescription = stringResource(R.string.indicator_image),
                 modifier = Modifier
                     .padding(5.dp)
             )
@@ -74,6 +75,6 @@ private fun TabRowPreview() {
     val state = remember {
         mutableIntStateOf(0)
     }
-    ItemCategory(mutableIntState = state, index = 0, categoryItem = CategoryItem(name = "Mobile")) {
+    ItemCategory(mutableIntState = state, index = 0, categoryItem = CategoryItemDTO(name = "Mobile")) {
     }
 }

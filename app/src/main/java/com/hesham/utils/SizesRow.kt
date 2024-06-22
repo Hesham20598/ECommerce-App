@@ -21,14 +21,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hesham.e_commerceapp.productDetails.ProductDetailsViewModel
 import com.hesham.e_commerceapp.ui.theme.mainColor
 import com.hesham.e_commerceapp.ui.theme.textColor1
 
 @Composable
-fun SizesRow() {
-    var selectedSize by remember {
-        mutableStateOf("")
-    }
+fun SizesRow(vm:ProductDetailsViewModel) {
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -41,17 +40,17 @@ fun SizesRow() {
             text = "38",
             style = TextStyle(
                 fontSize = 14.sp,
-                color = if (selectedSize == "38") Color.White else textColor1
+                color = if (vm.selectedSize.value == "38") Color.White else textColor1
             ),
             modifier = Modifier
                 .clip(CircleShape)
-                .background(if (selectedSize == "38") mainColor else Color.Transparent)
+                .background(if (vm.selectedSize.value == "38") mainColor else Color.Transparent)
                 .padding(8.dp)
                 .clickable {
-                    if (selectedSize == "38") {
-                        selectedSize = ""
+                    if (vm.selectedSize.value == "38") {
+                        vm.selectedSize.value = ""
                     } else {
-                        selectedSize = "38"
+                        vm.selectedSize.value = "38"
                     }
                 }
         )
@@ -59,17 +58,17 @@ fun SizesRow() {
             text = "39",
             style = TextStyle(
                 fontSize = 14.sp,
-                color = if (selectedSize == "39") Color.White else textColor1
+                color = if (vm.selectedSize.value == "39") Color.White else textColor1
             ),
             modifier = Modifier
                 .clip(CircleShape)
-                .background(if (selectedSize == "39") mainColor else Color.Transparent)
+                .background(if (vm.selectedSize.value == "39") mainColor else Color.Transparent)
                 .padding(8.dp)
                 .clickable {
-                    if (selectedSize == "39") {
-                        selectedSize = ""
+                    if (vm.selectedSize.value == "39") {
+                        vm.selectedSize.value = ""
                     } else {
-                        selectedSize = "39"
+                        vm.selectedSize.value = "39"
                     }
                 }
         )
@@ -77,17 +76,17 @@ fun SizesRow() {
             text = "40",
             style = TextStyle(
                 fontSize = 14.sp,
-                color = if (selectedSize == "40") Color.White else textColor1
+                color = if (vm.selectedSize.value == "40") Color.White else textColor1
             ),
             modifier = Modifier
                 .clip(CircleShape)
-                .background(if (selectedSize == "40") mainColor else Color.Transparent)
+                .background(if (vm.selectedSize.value == "40") mainColor else Color.Transparent)
                 .padding(8.dp)
                 .clickable {
-                    if (selectedSize == "40") {
-                        selectedSize = ""
+                    if (vm.selectedSize.value == "40") {
+                        vm.selectedSize.value = ""
                     } else {
-                        selectedSize = "40"
+                        vm.selectedSize.value = "40"
                     }
                 }
         )
@@ -95,17 +94,17 @@ fun SizesRow() {
             text = "41",
             style = TextStyle(
                 fontSize = 14.sp,
-                color = if (selectedSize == "41") Color.White else textColor1
+                color = if (vm.selectedSize.value == "41") Color.White else textColor1
             ),
             modifier = Modifier
                 .clip(CircleShape)
-                .background(if (selectedSize == "41") mainColor else Color.Transparent)
+                .background(if (vm.selectedSize.value == "41") mainColor else Color.Transparent)
                 .padding(8.dp)
                 .clickable {
-                    if (selectedSize == "41") {
-                        selectedSize = ""
+                    if (vm.selectedSize.value == "41") {
+                        vm.selectedSize.value = ""
                     } else {
-                        selectedSize = "41"
+                        vm.selectedSize.value = "41"
                     }
                 }
         )
@@ -113,17 +112,17 @@ fun SizesRow() {
             text = "42",
             style = TextStyle(
                 fontSize = 14.sp,
-                color = if (selectedSize == "42") Color.White else textColor1
+                color = if (vm.selectedSize.value == "42") Color.White else textColor1
             ),
             modifier = Modifier
                 .clip(CircleShape)
-                .background(if (selectedSize == "42") mainColor else Color.Transparent)
+                .background(if (vm.selectedSize.value == "42") mainColor else Color.Transparent)
                 .padding(8.dp)
                 .clickable {
-                    if (selectedSize == "42") {
-                        selectedSize = ""
+                    if (vm.selectedSize.value == "42") {
+                        vm.selectedSize.value = ""
                     } else {
-                        selectedSize = "42"
+                        vm.selectedSize.value = "42"
                     }
                 }
         )
@@ -137,5 +136,5 @@ fun SizesRow() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun SizesRowPreview() {
-    SizesRow()
+    SizesRow(ProductDetailsViewModel())
 }

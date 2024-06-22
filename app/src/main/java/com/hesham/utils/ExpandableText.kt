@@ -3,7 +3,7 @@ package com.hesham.utils
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.hesham.e_commerceapp.R
 import com.hesham.e_commerceapp.ui.theme.textColor1
 
 @Composable
@@ -36,13 +38,13 @@ fun ExpandableText(modifier: Modifier = Modifier, text: String) {
                     fontSize = 14.sp
                 )
             ) {
-                append("Read Less")
+                append(stringResource(R.string.read_less))
             }
             pop()
         }
     } else {
         buildAnnotatedString {
-            append(text.take(105))
+            append(text.take(100))
             append("...")
             pushStringAnnotation(tag = "action", annotation = "show_more")
             withStyle(
@@ -52,7 +54,7 @@ fun ExpandableText(modifier: Modifier = Modifier, text: String) {
                     fontSize = 14.sp
                 )
             ) {
-                append("Read More")
+                append(stringResource(R.string.read_more))
             }
             pop()
         }

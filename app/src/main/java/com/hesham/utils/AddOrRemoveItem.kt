@@ -16,18 +16,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.hesham.e_commerceapp.R
-import com.hesham.e_commerceapp.productdetails.ProductDetailsViewModel
+import com.hesham.e_commerceapp.productDetails.ProductDetailsViewModel
 import com.hesham.e_commerceapp.ui.theme.mainColor
 
 @Composable
-fun AddOrRemoveItem(modifier: Modifier = Modifier, vm: ProductDetailsViewModel = viewModel()) {
+fun AddOrRemoveItem(modifier: Modifier = Modifier, vm: ProductDetailsViewModel) {
     Row(
         modifier = modifier
             .clip(CircleShape)
@@ -39,19 +39,19 @@ fun AddOrRemoveItem(modifier: Modifier = Modifier, vm: ProductDetailsViewModel =
         // decrease an item
         Image(
             painter = painterResource(id = R.drawable.ic_minus),
-            contentDescription = "decrease item",
+            contentDescription = stringResource(R.string.decrease_item),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(20.dp)
                 .clickable {
-                    if (vm.amountNumber > 1) {
-                        vm.amountNumber--
+                    if (vm.amountNumber.intValue > 1) {
+                        vm.amountNumber.intValue--
                         vm.getTotalPriceValue()
                     }
                 }
         )
         Text(
-            text = "${vm.amountNumber}", style = TextStyle(
+            text = "${vm.amountNumber.intValue}", style = TextStyle(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Medium,
                 color = Color.White
@@ -61,12 +61,12 @@ fun AddOrRemoveItem(modifier: Modifier = Modifier, vm: ProductDetailsViewModel =
         // add an item
         Image(
             painter = painterResource(id = R.drawable.ic_plus),
-            contentDescription = "add another item",
+            contentDescription = stringResource(R.string.add_another_item),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(20.dp)
                 .clickable {
-                    vm.amountNumber++
+                    vm.amountNumber.intValue++
                     vm.getTotalPriceValue()
                 }
         )
@@ -79,5 +79,5 @@ fun AddOrRemoveItem(modifier: Modifier = Modifier, vm: ProductDetailsViewModel =
 @Preview
 @Composable
 private fun AddOrRemovePreview() {
-    AddOrRemoveItem()
+    AddOrRemoveItem(vm = ProductDetailsViewModel())
 }

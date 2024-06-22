@@ -32,21 +32,32 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.hesham.domain.entity.product.ProductItemDTO
+import com.hesham.domain.entity.subCategory.SubCategoryItemDTO
 import com.hesham.e_commerceapp.R
+import com.hesham.e_commerceapp.categories.CategoriesViewModel
 import com.hesham.e_commerceapp.ui.theme.gold
+import com.hesham.e_commerceapp.ui.theme.mainColor
 import com.hesham.e_commerceapp.ui.theme.textColor1
-import com.hesham.e_commerceapp.ui.theme.textColor2
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun CategoryItem(categoryName: String, index: Int, onCategoryItemClick: () -> Unit) {
+fun SubCategoryItem(
+    vm: CategoriesViewModel,
+    subCategoryItem: SubCategoryItemDTO,
+    index: Int,
+    onCategoryItemClick: () -> Unit
+) {
     Column(
         modifier = when (index) {
             0, 3, 6 -> {
@@ -69,9 +80,9 @@ fun CategoryItem(categoryName: String, index: Int, onCategoryItemClick: () -> Un
                     onCategoryItemClick()
                 }, shape = RoundedCornerShape(5.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.shirt_image),
-                contentDescription = "category image",
+            GlideImage(
+                model = vm.selectedCategoryImage,
+                contentDescription = stringResource(id = R.string.category_image),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
@@ -79,7 +90,7 @@ fun CategoryItem(categoryName: String, index: Int, onCategoryItemClick: () -> Un
 
         Text(
             modifier = Modifier.padding(top = 6.dp),
-            text = categoryName,
+            text = subCategoryItem.name ?: "",
             style = TextStyle(
                 fontSize = 12.sp,
                 color = textColor1
@@ -89,8 +100,16 @@ fun CategoryItem(categoryName: String, index: Int, onCategoryItemClick: () -> Un
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ProductItem(index: Int, onProductItemClick: () -> Unit, onAddIconClick: () -> Unit) {
+fun ItemProduct(
+    productItem: ProductItemDTO,
+    index: Int,
+    onProductItemClick: () -> Unit,
+    onAddToWishListClick: () -> Unit,
+    addedToWishList: Boolean = false,
+    onAddIconClick: () -> Unit
+) {
     Card(
         shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
@@ -113,14 +132,42 @@ fun ProductItem(index: Int, onProductItemClick: () -> Unit, onAddIconClick: () -
         }
 
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.nikeairjordan_image),
-            contentDescription = "product image",
+        ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(.5f),
-            contentScale = ContentScale.Crop
-        )
+                .fillMaxHeight(.5f)
+        ) {
+            val (productImage, addToWishlistIcon) = createRefs()
+
+            GlideImage(
+                model = productItem.imageCover,
+                contentDescription = stringResource(id = R.string.product_image),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .constrainAs(productImage) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                    },
+                contentScale = ContentScale.Crop
+            )
+            AddToWishlistIcon(
+                addedToWishList = addedToWishList,
+                modifier = Modifier.constrainAs(addToWishlistIcon) {
+                    top.linkTo(parent.top, margin = 8.dp)
+                    end.linkTo(parent.end, margin = 8.dp)
+                }
+            ) {
+                onAddToWishListClick()
+            }
+
+
+        }
+
+
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -133,16 +180,19 @@ fun ProductItem(index: Int, onProductItemClick: () -> Unit, onAddIconClick: () -
             ) {
                 val (name, description, price, originalPrice, review, reviewValue, starIcon, addIcon) = createRefs()
                 Text(
-                    text = "Nike Air Jordon", style = TextStyle(
+                    text = productItem.title ?: "", style = TextStyle(
                         fontSize = 14.sp,
-                        color = textColor1
-                    ), modifier = Modifier.constrainAs(name) {
+                        color = textColor1,
+                    ), maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.constrainAs(name) {
                         top.linkTo(parent.top, margin = 4.dp)
                         start.linkTo(parent.start, margin = 8.dp)
+                        width = Dimension.fillToConstraints
                     }
                 )
                 Text(
-                    text = "Nike shoes flexible for wo..",
+                    text = productItem.description ?: "",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     style = TextStyle(
@@ -156,21 +206,23 @@ fun ProductItem(index: Int, onProductItemClick: () -> Unit, onAddIconClick: () -
                         width = Dimension.fillToConstraints
                     }
                 )
-                Text(text = "EGP 1,200 ", style = TextStyle(
-                    fontSize = 14.sp,
-                    color = textColor1
-                ), modifier = Modifier.constrainAs(price) {
-                    top.linkTo(description.bottom, margin = 8.dp)
-                    start.linkTo(name.start)
-                    bottom.linkTo(review.top)
-                }
+                Text(text = if (productItem.priceAfterDiscount == 0 || productItem.priceAfterDiscount == null) "${productItem.price}" else "${productItem.priceAfterDiscount}",
+                    style = TextStyle(
+                        fontSize = 14.sp,
+                        color = textColor1
+                    ),
+                    modifier = Modifier.constrainAs(price) {
+                        top.linkTo(description.bottom, margin = 8.dp)
+                        start.linkTo(name.start)
+                        bottom.linkTo(review.top)
+                    }
                 )
                 Text(
-                    text = "2000 EGP",
+                    text = if (productItem.priceAfterDiscount == 0 || productItem.priceAfterDiscount == null) "" else "${productItem.price}",
                     style = TextStyle(
                         textDecoration = TextDecoration.Underline,
                         fontSize = 11.sp,
-                        color = textColor2
+                        color = mainColor
                     ),
                     modifier = Modifier.constrainAs(originalPrice) {
                         top.linkTo(price.top)
@@ -190,7 +242,7 @@ fun ProductItem(index: Int, onProductItemClick: () -> Unit, onAddIconClick: () -
                     }
                 )
 
-                Text(text = "(4.6)", style = TextStyle(
+                Text(text = "${productItem.ratingsAverage}", style = TextStyle(
                     fontSize = 12.sp,
                     color = textColor1
                 ),
@@ -236,22 +288,22 @@ fun ProductItem(index: Int, onProductItemClick: () -> Unit, onAddIconClick: () -
 }
 
 
-@Preview(showBackground = true, showSystemUi = true, backgroundColor = 0xff808080)
-@Composable
-private fun ProductItemPreview() {
-    ProductItem(0, onProductItemClick = {}) {}
-}
+//@Preview(showBackground = true, showSystemUi = true, backgroundColor = 0xff808080)
+//@Composable
+//private fun ProductItemPreview() {
+//    ItemProduct(0, onProductItemClick = {}, onAddToWishListClick = {}) {}
+//}
 
 @Composable
-fun RowColorItem(colorsList: List<Color>, index: Int,mutableSelectedIntState: MutableIntState) {
+fun RowColorItem(colorsList: List<Color>, index: Int, mutableSelectedIntState: MutableIntState) {
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier
             .clip(CircleShape)
             .background(colorsList[index])
             .size(35.dp)
             .clickable {
-                if (mutableSelectedIntState.intValue!=index){
-                    mutableSelectedIntState.intValue =index
+                if (mutableSelectedIntState.intValue != index) {
+                    mutableSelectedIntState.intValue = index
                 } else {
                     mutableSelectedIntState.intValue = -1
                 }
@@ -277,5 +329,5 @@ fun RowColorItem(colorsList: List<Color>, index: Int,mutableSelectedIntState: Mu
 //@Preview()
 //@Composable
 //private fun CategoryItemPreview() {
-//    CategoryItem("T-Shirts", 0) {}
+//    SubCategoryItem(vm = CategoriesViewModel(), subCategoryItem = SubCategoryItem(), index = 0) {}
 //}

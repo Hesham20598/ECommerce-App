@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">E-Commerce App</string>
+    <string name="what_do_you_search_for">ما الذي تبحث عنه ؟</string>
+    <string name="description">الوصف</string>
+    <string name="size">المقاس</string>
+    <string name="color">اللون</string>
+    <string name="total_price">السعر الكلي</string>
+    <string name="add_to_cart">إضافة إلى السلة</string>
+    <string name="product_details">تفاصيل المنتج</string>
+    <string name="arrow_back">الرجوع للخلف</string>
+    <string name="route_signature">علامة روت</string>
+    <string name="search_icon">أيقونة البحث</string>
+    <string name="cart_image">أيقونة السلة</string>
+    <string name="category_image">صورة الفئة</string>
+    <string name="image_says_nothing_here_yet">لا شئ هنا بعد</string>
+    <string name="product_image">صورة المنتج</string>
+    <string name="review_star_image">صورة نجمة التقييم</string>
+    <string name="decrease_item">حذف عنصر</string>
+    <string name="add_another_item">إضافة عنصر</string>
+    <string name="added_to_wishlist">تمت إضافته لقائمة المفضلة</string>
+    <string name="add_to_wishlist">أضف إلى قائمة المفضلة</string>
+    <string name="read_less">اقرأ أقل</string>
+    <string name="read_more">اقرأ أكثر</string>
+    <string name="indicator_image">صورة محدد الفئة</string>
+</resources>

@@ -7,13 +7,16 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.hesham.e_commerceapp.categories.CategoriesViewModel
+import com.hesham.e_commerceapp.productDetails.ProductDetailsViewModel
 
 @Composable
-fun CategoriesGrid(navController: NavHostController) {
+fun CategoriesGrid(
+    vm: CategoriesViewModel,
+    navController: NavHostController
+) {
     LazyVerticalGrid(
         contentPadding = PaddingValues(0.dp),
         columns = GridCells.Fixed(3),
@@ -21,8 +24,15 @@ fun CategoriesGrid(navController: NavHostController) {
             .padding(top = 10.dp)
             .fillMaxSize()
     ) {
-        items(9) { index ->
-            CategoryItem(categoryName = "T-Shirts", index) { // on category item clicked ..
+        items(vm.subCategoriesList.size) { position ->
+            SubCategoryItem(
+                vm = vm,
+                subCategoryItem = vm.subCategoriesList[position],
+                index = position
+            ) { // on sub category item clicked ..
+                vm.subCategoryId = vm.subCategoriesList[position].id ?: ""
+
+                vm.getAllProductsOfSubCategory(vm.subCategoryId ?: "")
                 navController.navigate("productListScreen")
             }
         }
@@ -30,7 +40,12 @@ fun CategoriesGrid(navController: NavHostController) {
 }
 
 @Composable
-fun ProductsGrid(paddingValues: PaddingValues, navController: NavHostController) {
+fun ProductsGrid(
+    paddingValues: PaddingValues,
+    navController: NavHostController,
+    categoriesViewModel: CategoriesViewModel,
+    productDetailsViewModel: ProductDetailsViewModel
+) {
 
 
     LazyVerticalGrid(
@@ -41,20 +56,34 @@ fun ProductsGrid(paddingValues: PaddingValues, navController: NavHostController)
             )
             .fillMaxSize()
     ) {
-        items(6) { position ->
-            ProductItem(position, onProductItemClick = {
-                navController.navigate("productDetailsScreen")
-            }) {
-                // on Add Icon Click
+        items(categoriesViewModel.productsList.size) { position ->
+            ItemProduct(
+                productItem = categoriesViewModel.productsList[position],
+                index = position,
+                onProductItemClick = {
+                    productDetailsViewModel.selectedProductItem =
+                        categoriesViewModel.productsList[position]
+                    navController.navigate("productDetailsScreen")
+                },
+                onAddToWishListClick = {
+
+                })
+            {
+                // on add to cart icon click
                 navController.navigate("cartScreen")
             }
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun ProductsGridPreview() {
-    val navHostController = NavHostController(LocalContext.current)
-    ProductsGrid(paddingValues = PaddingValues(), navHostController)
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//private fun ProductsGridPreview() {
+//    val navHostController = NavHostController(LocalContext.current)
+//    ProductsGrid(
+//        paddingValues = PaddingValues(),
+//        navHostController,
+//        categoriesViewModel = CategoriesViewModel(),
+//        productDetailsViewModel = ProductDetailsViewModel()
+//    )
+//}

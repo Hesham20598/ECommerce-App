@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -62,12 +64,10 @@ dependencies {
     implementation(libs.androidx.material3)
 
 
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    // Gson converter
-    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
-    // Http Logging Interceptor
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+
+    //Glide Compose
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
 
     implementation("androidx.compose.material:material:1.6.7")
     implementation(project(":domain"))
@@ -77,6 +77,13 @@ dependencies {
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    // Dagger Hilt
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    // to inject hiltViewModel
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+
     implementation(project(":data"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -85,4 +92,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+kapt {
+    correctErrorTypes = true
 }

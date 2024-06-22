@@ -2,61 +2,85 @@ package com.hesham.e_commerceapp
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.hesham.e_commerceapp.cart.CartScreen
 import com.hesham.e_commerceapp.categories.CategoriesScreen
+import com.hesham.e_commerceapp.categories.CategoriesViewModel
 import com.hesham.e_commerceapp.favourite.FavouriteScreen
 import com.hesham.e_commerceapp.home.HomeScreen
 import com.hesham.e_commerceapp.main.MainViewModel
-import com.hesham.e_commerceapp.productdetails.ProductDetailsScreen
-import com.hesham.e_commerceapp.productlist.ProductListScreen
+import com.hesham.e_commerceapp.productDetails.ProductDetailsScreen
+import com.hesham.e_commerceapp.productDetails.ProductDetailsViewModel
+import com.hesham.e_commerceapp.productList.ProductListScreen
 import com.hesham.e_commerceapp.profile.ProfileScreen
+import com.hesham.utils.bottomBar.BottomBarViewModel
 
 @Composable
 fun BottomNavGraph(
     navController: NavHostController,
     paddingValues: PaddingValues,
-    vm: MainViewModel = viewModel()
+    mainViewModel: MainViewModel,
+    categoryViewModel: CategoriesViewModel,
+    productDetailsViewModel: ProductDetailsViewModel,
+    bottomBarViewModel: BottomBarViewModel,
 ) {
 
     NavHost(navController = navController, startDestination = BottomBarScreen.Home.route) {
         // Our App Screens...
         composable(route = BottomBarScreen.Home.route) {
-            vm.shouldBottomBarBeShown = true
-            vm.largeAppBarState = true
-            HomeScreen()
+            mainViewModel.shouldBottomBarBeShown = true
+            mainViewModel.largeAppBarState = true
+            bottomBarViewModel.selectedState.intValue = 0
+            HomeScreen(navController)
         }
+
         composable(route = BottomBarScreen.Categories.route) {
-            vm.shouldBottomBarBeShown = true
-            vm.largeAppBarState = true
-            CategoriesScreen(paddingValues, navController)
+            mainViewModel.shouldBottomBarBeShown = true
+            mainViewModel.largeAppBarState = true
+            bottomBarViewModel.selectedState.intValue = 1
+            CategoriesScreen(paddingValues, navController, categoryViewModel)
         }
         composable(route = BottomBarScreen.Favourite.route) {
-            vm.shouldBottomBarBeShown = true
-            vm.largeAppBarState = true
-            FavouriteScreen()
+            mainViewModel.shouldBottomBarBeShown = true
+            mainViewModel.largeAppBarState = true
+            bottomBarViewModel.selectedState.intValue = 2
+            FavouriteScreen(bottomBarViewModel)
         }
         composable(route = BottomBarScreen.Profile.route) {
-            vm.shouldBottomBarBeShown = true
-            vm.largeAppBarState = false
-            ProfileScreen(navController,paddingValues)
+            mainViewModel.shouldBottomBarBeShown = true
+            mainViewModel.largeAppBarState = false
+            bottomBarViewModel.selectedState.intValue = 3
+            ProfileScreen(navController, paddingValues)
         }
         composable(route = "productDetailsScreen") {
-            vm.shouldBottomBarBeShown = false
-            vm.largeAppBarState = false
-            ProductDetailsScreen(paddingValues, navController)
+            mainViewModel.shouldBottomBarBeShown = false
+            mainViewModel.largeAppBarState = false
+            bottomBarViewModel.selectedState.intValue = 1
+            ProductDetailsScreen(
+                paddingValues,
+                navController,
+                productDetailsViewModel,
+            ) { // on Add to wishList icon click...
+
+            }
         }
         composable(route = "productListScreen") {
-            vm.shouldBottomBarBeShown = true
-            vm.largeAppBarState = true
-            ProductListScreen(paddingValues, navController)
+            mainViewModel.shouldBottomBarBeShown = true
+            mainViewModel.largeAppBarState = true
+            bottomBarViewModel.selectedState.intValue = 1
+            ProductListScreen(
+                paddingValues,
+                navController,
+                categoryViewModel,
+                productDetailsViewModel
+            )
         }
         composable(route = "cartScreen") {
-            vm.shouldBottomBarBeShown = false
-            vm.largeAppBarState = false
+            mainViewModel.shouldBottomBarBeShown = false
+            mainViewModel.largeAppBarState = false
+            bottomBarViewModel.selectedState.intValue = 1
             CartScreen(paddingValues)
         }
 

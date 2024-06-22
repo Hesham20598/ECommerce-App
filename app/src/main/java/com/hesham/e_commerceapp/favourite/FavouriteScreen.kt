@@ -11,11 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.compose.rememberNavController
-import com.hesham.utils.BottomBar
+import com.hesham.utils.bottomBar.BottomBarViewModel
+import com.hesham.utils.bottomBar.BottomBar
 import com.hesham.utils.CustomSearchAppBar
 
 @Composable
-fun FavouriteScreen() {
+fun FavouriteScreen(bottomBarViewModel: BottomBarViewModel) {
     val navController = rememberNavController()
     Scaffold(topBar = {
 
@@ -23,7 +24,7 @@ fun FavouriteScreen() {
 
         }
     }, bottomBar = {
-        BottomBar(navHostController = navController)
+        BottomBar(navHostController = navController, bottomBarViewModel = bottomBarViewModel)
     }) { paddingValues ->
         Box(
             modifier = Modifier

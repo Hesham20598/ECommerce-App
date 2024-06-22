@@ -14,21 +14,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.hesham.e_commerceapp.BottomNavGraph
-import com.hesham.utils.BottomBar
+import com.hesham.e_commerceapp.categories.CategoriesViewModel
+import com.hesham.e_commerceapp.productDetails.ProductDetailsViewModel
 import com.hesham.utils.CustomSearchAppBar
 import com.hesham.utils.SimpleAppBar
+import com.hesham.utils.bottomBar.BottomBar
+import com.hesham.utils.bottomBar.BottomBarViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
         setContent {
-
             enableEdgeToEdge(
                 statusBarStyle = SystemBarStyle.auto(
                     Color.TRANSPARENT,
@@ -42,12 +44,17 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainActivityContent(vm: MainViewModel = viewModel()) {
+fun MainActivityContent(
+    mainViewModel: MainViewModel = hiltViewModel(),
+    categoryViewModel: CategoriesViewModel = hiltViewModel(),
+    productDetailsViewModel: ProductDetailsViewModel = hiltViewModel(),
+    bottomBarViewModel: BottomBarViewModel = hiltViewModel()
+) {
     val navController = rememberNavController()
     Scaffold(
         modifier = Modifier.padding(top = 20.dp, bottom = 45.dp),
         topBar = {
-            if (!vm.largeAppBarState) {
+            if (!mainViewModel.largeAppBarState) {
                 SimpleAppBar(onBackArrowClick = {
                     navController.navigateUp()
                 }, onSearchIconClick = {
@@ -68,12 +75,18 @@ fun MainActivityContent(vm: MainViewModel = viewModel()) {
         },
         // bottom navigation Bar
         bottomBar = {
-            if (vm.shouldBottomBarBeShown)
-                BottomBar(navHostController = navController)
+            if (mainViewModel.shouldBottomBarBeShown)
+                BottomBar(navHostController = navController, bottomBarViewModel)
         },
 
         ) { paddingValues ->
-        BottomNavGraph(navController = navController, paddingValues)
-
+        BottomNavGraph(
+            navController = navController,
+            paddingValues,
+            mainViewModel = mainViewModel,
+            categoryViewModel = categoryViewModel,
+            productDetailsViewModel = productDetailsViewModel,
+            bottomBarViewModel = bottomBarViewModel
+        )
     }
 }
