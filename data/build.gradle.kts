@@ -52,7 +52,6 @@ dependencies {
     // to inject hiltViewModel
     implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
 
-    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
