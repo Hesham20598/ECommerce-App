@@ -60,3 +60,12 @@ fun AddToWishlistIcon(
         }
     }
 }
+
+@Preview
+@Composable
+private fun Preview() {
+    AddToWishlistIcon(addedToWishList = true) {
+        
+    }
+    
+}
